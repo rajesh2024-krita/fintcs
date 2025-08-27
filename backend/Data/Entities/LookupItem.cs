@@ -23,4 +23,8 @@ public class LookupItem
     public bool IsActive { get; set; } = true;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
+    
+    [MaxLength(50)]
+    public string Type { get; set; } = string.Empty;
 }

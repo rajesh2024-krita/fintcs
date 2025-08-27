@@ -24,5 +24,6 @@ public class MonthlyDemandHeader
     // Navigation properties
     public virtual Society Society { get; set; } = null!;
     public virtual LookupItem Month { get; set; } = null!;
+    public virtual ICollection<MonthlyDemandRow> DemandRows { get; set; } = new List<MonthlyDemandRow>();
     public virtual ICollection<MonthlyDemandRow> Rows { get; set; } = new List<MonthlyDemandRow>();
 }

@@ -42,5 +42,6 @@ public class Voucher
     // Navigation properties
     public virtual Society Society { get; set; } = null!;
     public virtual LookupItem VoucherType { get; set; } = null!;
+    public virtual ICollection<VoucherLine> VoucherLines { get; set; } = new List<VoucherLine>();
     public virtual ICollection<VoucherLine> Lines { get; set; } = new List<VoucherLine>();
 }

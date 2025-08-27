@@ -73,6 +73,8 @@ public class Loan
     [Required]
     public Guid SocietyId { get; set; }
     
+    public Guid? MemberId { get; set; }
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     
@@ -80,4 +82,5 @@ public class Loan
     public virtual Society Society { get; set; } = null!;
     public virtual LookupItem LoanType { get; set; } = null!;
     public virtual LookupItem? Bank { get; set; }
+    public virtual Member? Member { get; set; }
 }

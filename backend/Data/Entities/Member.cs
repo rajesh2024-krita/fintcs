@@ -11,6 +11,9 @@ public class Member
     [Required, MaxLength(20)]
     public string MemNo { get; set; } = string.Empty; // Auto-generated: MEM_001, MEM_002, etc.
     
+    [MaxLength(20)]
+    public string MemberCode { get; set; } = string.Empty;
+    
     [Required, MaxLength(100)]
     public string Name { get; set; } = string.Empty;
     
