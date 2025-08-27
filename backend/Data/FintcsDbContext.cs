@@ -6,6 +6,71 @@ namespace Fintcs.Data;
 
 public class FintcsDbContext : DbContext
 {
+    public FintcsDbContext(DbContextOptions<FintcsDbContext> options) : base(options) { }
+
+    // DbSets for all entities
+    public DbSet<SuperAdmin> SuperAdmins { get; set; }
+    public DbSet<Society> Societies { get; set; }
+    public DbSet<AppUser> AppUsers { get; set; }
+    public DbSet<Member> Members { get; set; }
+    public DbSet<Loan> Loans { get; set; }
+    public DbSet<LookupItem> LookupItems { get; set; }
+    public DbSet<Voucher> Vouchers { get; set; }
+    public DbSet<VoucherLine> VoucherLines { get; set; }
+    public DbSet<MonthlyDemandHeader> MonthlyDemandHeaders { get; set; }
+    public DbSet<MonthlyDemandRow> MonthlyDemandRows { get; set; }
+    public DbSet<PendingEdit> PendingEdits { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Configure decimal precision
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Amount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.InterestRate)
+            .HasPrecision(5, 2);
+
+        modelBuilder.Entity<Voucher>()
+            .Property(v => v.TotalAmount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<VoucherLine>()
+            .Property(vl => vl.DebitAmount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<VoucherLine>()
+            .Property(vl => vl.CreditAmount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<MonthlyDemandHeader>()
+            .Property(mdh => mdh.TotalAmount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.Amount)
+            .HasPrecision(18, 2);
+
+        // Configure unique constraints
+        modelBuilder.Entity<Member>()
+            .HasIndex(m => new { m.SocietyId, m.MemNo })
+            .IsUnique();
+
+        modelBuilder.Entity<Voucher>()
+            .HasIndex(v => new { v.SocietyId, v.VoucherNo })
+            .IsUnique();
+
+        modelBuilder.Entity<MonthlyDemandHeader>()
+            .HasIndex(mdh => new { mdh.SocietyId, mdh.MonthId, mdh.Year })
+            .IsUnique();
+    }
+}
+
+public class FintcsDbContext : DbContext
+{
     public FintcsDbContext(DbContextOptions<FintcsDbContext> options) : base(options)
     {
     }
