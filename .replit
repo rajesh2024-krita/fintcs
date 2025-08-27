@@ -1,2 +1,14 @@
 [nix]
 channel = "stable-25_05"
+
+[workflows]
+runButton = "Run Backend API"
+
+[[workflows.workflow]]
+name = "Run Backend API"
+author = 46967614
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && dotnet run"
