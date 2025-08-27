@@ -10,15 +10,15 @@ public class FintcsDbContext : DbContext
 
     // DbSets for all entities
     public DbSet<SuperAdmin> SuperAdmins { get; set; }
+    public DbSet<LookupItem> LookupItems { get; set; }
     public DbSet<Society> Societies { get; set; }
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Member> Members { get; set; }
     public DbSet<Loan> Loans { get; set; }
-    public DbSet<LookupItem> LookupItems { get; set; }
-    public DbSet<Voucher> Vouchers { get; set; }
-    public DbSet<VoucherLine> VoucherLines { get; set; }
     public DbSet<MonthlyDemandHeader> MonthlyDemandHeaders { get; set; }
     public DbSet<MonthlyDemandRow> MonthlyDemandRows { get; set; }
+    public DbSet<Voucher> Vouchers { get; set; }
+    public DbSet<VoucherLine> VoucherLines { get; set; }
     public DbSet<PendingEdit> PendingEdits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,24 +26,67 @@ public class FintcsDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // Configure decimal precision
-        modelBuilder.Entity<Loan>()
-            .Property(l => l.Amount)
-            .HasPrecision(18, 2);
-
-        modelBuilder.Entity<Loan>()
-            .Property(l => l.InterestRate)
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestDividend)
             .HasPrecision(5, 2);
-
-        modelBuilder.Entity<Voucher>()
-            .Property(v => v.TotalAmount)
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestOD)
+            .HasPrecision(5, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestCD)
+            .HasPrecision(5, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestLoan)
+            .HasPrecision(5, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestEmergencyLoan)
+            .HasPrecision(5, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.InterestLAS)
+            .HasPrecision(5, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.LimitShare)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.LimitLoan)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.LimitEmergencyLoan)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Society>()
+            .Property(s => s.ChBounceChargeAmount)
             .HasPrecision(18, 2);
 
-        modelBuilder.Entity<VoucherLine>()
-            .Property(vl => vl.DebitAmount)
+        modelBuilder.Entity<Member>()
+            .Property(m => m.OpeningBalanceShare)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Member>()
+            .Property(m => m.Value)
             .HasPrecision(18, 2);
 
-        modelBuilder.Entity<VoucherLine>()
-            .Property(vl => vl.CreditAmount)
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.LoanAmount)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.PrevLoan)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.InstallmentAmount)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.Share)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.CD)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.LastSalary)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.MWF)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.PayAmount)
             .HasPrecision(18, 2);
 
         modelBuilder.Entity<MonthlyDemandHeader>()
@@ -51,45 +94,61 @@ public class FintcsDbContext : DbContext
             .HasPrecision(18, 2);
 
         modelBuilder.Entity<MonthlyDemandRow>()
-            .Property(mdr => mdr.Amount)
+            .Property(mdr => mdr.LoanAmt)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.CD)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.Loan)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.Interest)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.ELoan)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.InterestExtra)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.Net)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.IntDue)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.PInt)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.PDed)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.LAS)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.Int)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<MonthlyDemandRow>()
+            .Property(mdr => mdr.LASIntDue)
             .HasPrecision(18, 2);
 
-        // Configure unique constraints
-        modelBuilder.Entity<Member>()
-            .HasIndex(m => new { m.SocietyId, m.MemNo })
-            .IsUnique();
-
         modelBuilder.Entity<Voucher>()
-            .HasIndex(v => new { v.SocietyId, v.VoucherNo })
-            .IsUnique();
+            .Property(v => v.TotalDebit)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<Voucher>()
+            .Property(v => v.TotalCredit)
+            .HasPrecision(18, 2);
 
-        modelBuilder.Entity<MonthlyDemandHeader>()
-            .HasIndex(mdh => new { mdh.SocietyId, mdh.MonthId, mdh.Year })
-            .IsUnique();
-    }
-}
-
-public class FintcsDbContext : DbContext
-{
-    public FintcsDbContext(DbContextOptions<FintcsDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<SuperAdmin> SuperAdmins { get; set; }
-    public DbSet<Society> Societies { get; set; }
-    public DbSet<AppUser> AppUsers { get; set; }
-    public DbSet<Member> Members { get; set; }
-    public DbSet<Loan> Loans { get; set; }
-    public DbSet<MonthlyDemandHeader> MonthlyDemandHeaders { get; set; }
-    public DbSet<MonthlyDemandRow> MonthlyDemandRows { get; set; }
-    public DbSet<Voucher> Vouchers { get; set; }
-    public DbSet<VoucherLine> VoucherLines { get; set; }
-    public DbSet<LookupItem> LookupItems { get; set; }
-    public DbSet<PendingEdit> PendingEdits { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<VoucherLine>()
+            .Property(vl => vl.Debit)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<VoucherLine>()
+            .Property(vl => vl.Credit)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<VoucherLine>()
+            .Property(vl => vl.Ibldbc)
+            .HasPrecision(18, 2);
 
         // Configure relationships
         modelBuilder.Entity<AppUser>()
@@ -179,7 +238,16 @@ public class FintcsDbContext : DbContext
             .HasIndex(v => new { v.VoucherNo, v.SocietyId })
             .IsUnique();
 
+        modelBuilder.Entity<MonthlyDemandHeader>()
+            .HasIndex(mdh => new { mdh.MonthId, mdh.YearValue, mdh.SocietyId })
+            .IsUnique();
+
         modelBuilder.Entity<LookupItem>()
             .HasIndex(l => new { l.Category, l.Code });
+
+        // Configure computed column for NetLoan
+        modelBuilder.Entity<Loan>()
+            .Property(l => l.NetLoan)
+            .HasComputedColumnSql("[LoanAmount] - [PrevLoan]");
     }
 }

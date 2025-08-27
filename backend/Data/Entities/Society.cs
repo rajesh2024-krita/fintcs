@@ -1,6 +1,5 @@
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fintcs.Data.Entities;
 
@@ -12,61 +11,44 @@ public class Society
     public string Name { get; set; } = string.Empty;
     
     [MaxLength(500)]
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; }
     
     [MaxLength(100)]
-    public string City { get; set; } = string.Empty;
+    public string? City { get; set; }
     
     [MaxLength(20)]
-    public string Phone { get; set; } = string.Empty;
+    public string? Phone { get; set; }
     
     [MaxLength(20)]
-    public string Fax { get; set; } = string.Empty;
+    public string? Fax { get; set; }
     
     [MaxLength(100)]
-    public string Email { get; set; } = string.Empty;
+    public string? Email { get; set; }
     
     [MaxLength(200)]
-    public string Website { get; set; } = string.Empty;
+    public string? Website { get; set; }
     
     [MaxLength(50)]
-    public string RegistrationNo { get; set; } = string.Empty;
+    public string? RegistrationNo { get; set; }
     
     // Interest rates
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestDividend { get; set; }
-    
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestOD { get; set; }
-    
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestCD { get; set; }
-    
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestLoan { get; set; }
-    
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestEmergencyLoan { get; set; }
-    
-    [Column(TypeName = "decimal(5,2)")]
-    public decimal InterestLAS { get; set; }
+    public decimal InterestDividend { get; set; } = 0;
+    public decimal InterestOD { get; set; } = 0;
+    public decimal InterestCD { get; set; } = 0;
+    public decimal InterestLoan { get; set; } = 0;
+    public decimal InterestEmergencyLoan { get; set; } = 0;
+    public decimal InterestLAS { get; set; } = 0;
     
     // Limits
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal LimitShare { get; set; }
+    public decimal LimitShare { get; set; } = 0;
+    public decimal LimitLoan { get; set; } = 0;
+    public decimal LimitEmergencyLoan { get; set; } = 0;
     
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal LimitLoan { get; set; }
-    
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal LimitEmergencyLoan { get; set; }
-    
-    // Bounce charge
-    [Column(TypeName = "decimal(10,2)")]
-    public decimal ChBounceChargeAmount { get; set; }
+    // Ch bounce charge
+    public decimal ChBounceChargeAmount { get; set; } = 0;
     
     [MaxLength(50)]
-    public string ChBounceChargeMode { get; set; } = string.Empty;
+    public string? ChBounceChargeMode { get; set; } // Excess Provision, Cash, HDFC Bank, Inverter
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
@@ -75,6 +57,6 @@ public class Society
     public virtual ICollection<AppUser> Users { get; set; } = new List<AppUser>();
     public virtual ICollection<Member> Members { get; set; } = new List<Member>();
     public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
-    public virtual ICollection<Voucher> Vouchers { get; set; } = new List<Voucher>();
     public virtual ICollection<MonthlyDemandHeader> MonthlyDemands { get; set; } = new List<MonthlyDemandHeader>();
+    public virtual ICollection<Voucher> Vouchers { get; set; } = new List<Voucher>();
 }

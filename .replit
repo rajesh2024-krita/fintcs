@@ -2,7 +2,7 @@
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Run Backend API"
+runButton = "Run Backend"
 
 [[workflows.workflow]]
 name = "Run Backend API"
@@ -12,3 +12,33 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd backend && dotnet run"
+
+[[workflows.workflow]]
+name = "Install .NET"
+author = 46967614
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo 'export PATH=$PATH:$HOME/.dotnet' >> ~/.bashrc"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "source ~/.bashrc"
+
+[[workflows.workflow]]
+name = "Run Backend"
+author = 46967614
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "export PATH=$PATH:$HOME/.dotnet"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && ~/.dotnet/dotnet run"

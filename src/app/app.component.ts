@@ -1,25 +1,18 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
-import { AuthService } from './core/services/auth.service';
-import { ToastService } from './shared/services/toast.service';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    NavbarComponent,
-    ToastComponent
-  ],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, ToastComponent],
   template: `
-    <div class="min-h-screen bg-gray-50">
-      <app-navbar *ngIf="isAuthenticated"></app-navbar>
-      <main [class.pt-16]="isAuthenticated">
+    <div class="min-h-screen bg-gray-100">
+      <app-navbar *ngIf="authService.isAuthenticated()"></app-navbar>
+      <main [class]="authService.isAuthenticated() ? 'pt-16' : ''">
         <router-outlet></router-outlet>
       </main>
       <app-toast></app-toast>
@@ -27,22 +20,18 @@ import { ToastComponent } from './shared/components/toast/toast.component';
   `
 })
 export class AppComponent implements OnInit {
-  isAuthenticated = false;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private toastService: ToastService
+    public authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.authService.isAuthenticated$.subscribe(
-      isAuth => {
-        this.isAuthenticated = isAuth;
-        if (!isAuth && this.router.url !== '/login') {
-          this.router.navigate(['/login']);
-        }
+    if (this.authService.isAuthenticated()) {
+      const userRole = this.authService.getUserRole();
+      if (userRole) {
+        this.router.navigate(['/dashboard']);
       }
-    );
+    }
   }
 }

@@ -1,6 +1,5 @@
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fintcs.Data.Entities;
 
@@ -11,72 +10,66 @@ public class Member
     [Required, MaxLength(20)]
     public string MemNo { get; set; } = string.Empty; // Auto-generated: MEM_001, MEM_002, etc.
     
-    [MaxLength(20)]
-    public string MemberCode { get; set; } = string.Empty;
-    
     [Required, MaxLength(100)]
     public string Name { get; set; } = string.Empty;
     
     [MaxLength(100)]
-    public string FatherHusbandName { get; set; } = string.Empty;
+    public string? FatherHusbandName { get; set; }
     
     [MaxLength(500)]
-    public string OfficeAddress { get; set; } = string.Empty;
+    public string? OfficeAddress { get; set; }
     
     [MaxLength(100)]
-    public string City { get; set; } = string.Empty;
+    public string? City { get; set; }
     
     [MaxLength(20)]
-    public string PhoneOffice { get; set; } = string.Empty;
+    public string? PhoneOffice { get; set; }
     
     [MaxLength(100)]
-    public string Branch { get; set; } = string.Empty;
+    public string? Branch { get; set; }
     
     [MaxLength(20)]
-    public string PhoneRes { get; set; } = string.Empty;
+    public string? PhoneRes { get; set; }
     
     [MaxLength(20)]
-    public string Mobile { get; set; } = string.Empty;
+    public string? Mobile { get; set; }
     
     [MaxLength(100)]
-    public string Designation { get; set; } = string.Empty;
+    public string? Designation { get; set; }
     
     [MaxLength(500)]
-    public string ResidenceAddress { get; set; } = string.Empty;
+    public string? ResidenceAddress { get; set; }
     
     public DateTime? DOB { get; set; }
-    public DateTime? DOJSociety { get; set; } // Date of Joining Society
+    public DateTime? DOJSociety { get; set; }
     
     [MaxLength(100)]
-    public string Email { get; set; } = string.Empty;
+    public string? Email { get; set; }
     
     public DateTime? DOJOrg { get; set; } // Date of Joining Organization
     public DateTime? DOR { get; set; } // Date of Retirement
     
     [MaxLength(100)]
-    public string Nominee { get; set; } = string.Empty;
+    public string? Nominee { get; set; }
     
     [MaxLength(50)]
-    public string NomineeRelation { get; set; } = string.Empty;
+    public string? NomineeRelation { get; set; }
     
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal OpeningBalanceShare { get; set; }
-    
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal Value { get; set; }
+    public decimal OpeningBalanceShare { get; set; } = 0;
+    public decimal Value { get; set; } = 0;
     
     [MaxLength(10)]
-    public string CrDrCD { get; set; } = string.Empty; // Cr/Dr/CD
+    public string? CrDrCd { get; set; } // Cr / Dr / CD
     
     // Bank details
     [MaxLength(100)]
-    public string BankName { get; set; } = string.Empty;
+    public string? BankName { get; set; }
     
     [MaxLength(100)]
-    public string PayableAt { get; set; } = string.Empty;
+    public string? PayableAt { get; set; }
     
     [MaxLength(50)]
-    public string AccountNo { get; set; } = string.Empty;
+    public string? AccountNo { get; set; }
     
     // Status
     [MaxLength(20)]
@@ -84,15 +77,15 @@ public class Member
     
     public DateTime? StatusDate { get; set; }
     
-    // Deductions (stored as comma-separated string)
-    public string Deductions { get; set; } = string.Empty; // Share,Withdrawal,G Loan Instalment,E Loan Instalment
+    // Deductions (stored as JSON)
+    public string? DeductionsJson { get; set; } // Share, Withdrawal, G Loan Instalment, E Loan Instalment
     
-    // File uploads
+    // File paths
     [MaxLength(500)]
-    public string? PhotoUrl { get; set; }
+    public string? PhotoPath { get; set; }
     
     [MaxLength(500)]
-    public string? SignatureUrl { get; set; }
+    public string? SignaturePath { get; set; }
     
     [Required]
     public Guid SocietyId { get; set; }
